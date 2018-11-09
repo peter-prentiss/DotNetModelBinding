@@ -12,7 +12,17 @@ namespace DotNetModelBinding.Controllers
             repository = repo;
         }
 
-        public ViewResult Index(int id) =>
-            View(repository[id] ?? repository.People.First());
+        public IActionResult Index(int? id)
+        {
+            Person person;
+            if (id.HasValue && (person = repository[id.Value]) != null)
+            {
+                return View(person);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
